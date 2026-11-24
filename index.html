@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Danil Voshenikin — Editor, Colorist, VFX Artist</title>
+<meta name="description" content="Danil Voshenikin — editor, colorist and VFX artist for commercials. Tashkent, Uzbekistan.">
+<meta property="og:title" content="Danil Voshenikin — Editor, Colorist, VFX Artist">
+<meta property="og:image" content="assets/mancity.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Caveat:wght@500;700&family=Inter+Tight:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ECE8E0; --ink:#1A1A1A; --muted:#55524D; --panel:#1F1F22; --panel-head:#28282C;
+  --panel-text:#D8D8DC; --panel-muted:#9A9AA0; --line:#3A3A3F;
+  --red:#E5322D; --blue:#3D7BFF; --green:#3BAA5C; --yellow:#E8B321; --clip:#3E6696;
+  --note:#F7F4EE; --tape:#E4D7BE;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter Tight',system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+html[lang=ru] [data-l=en], html[lang=en] [data-l=ru]{display:none!important}
+a{color:inherit}
+img{max-width:100%;display:block}
+.mono{font-family:'JetBrains Mono',monospace}
+.hand{font-family:Caveat,cursive;font-weight:700}
+.grid-bg{background-color:var(--paper);background-image:linear-gradient(rgba(30,30,30,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(30,30,30,.06) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+.deco{position:absolute;pointer-events:none;background-repeat:no-repeat;background-size:contain}
+.brA{background-image:url(assets/brushA.png)} .brB{background-image:url(assets/brushB.png)} .ht{background-image:url(assets/halftone.png)}
+
+/* ruler + nav */
+.ruler{height:22px;background:var(--panel);display:flex;padding-left:22px;overflow:hidden;font-size:10px;color:var(--panel-muted)}
+.ruler span{flex:1;min-width:70px;border-left:1px solid #44444A;padding:5px 0 0 5px}
+.nav{position:sticky;top:0;z-index:20;background:rgba(236,232,224,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(26,26,26,.1)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;flex-wrap:wrap}
+.logo{font-family:'Marck Script',cursive;font-size:28px;text-decoration:none;-webkit-text-stroke:.6px var(--ink);padding:6px 0}
+.nav-links{display:flex;align-items:center;gap:22px;flex-wrap:wrap;font-weight:500;font-size:15px}
+.nav-links a{text-decoration:none;padding:10px 0}
+.nav-links a:hover{color:var(--blue)}
+.lang{display:flex;background:var(--panel);border-radius:8px;padding:3px}
+.lang button{font:600 13px 'JetBrains Mono',monospace;border:0;background:transparent;color:var(--panel-muted);padding:8px 12px;border-radius:6px;cursor:pointer;min-height:36px}
+.lang button[aria-pressed=true]{background:#3A3A40;color:#fff}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:56px 0 80px}
+.note{position:absolute;background:var(--note);box-shadow:0 4px 12px rgba(0,0,0,.15);font-family:Caveat,cursive;font-weight:700;line-height:1;padding:10px 16px;border-radius:12px}
+.hero h1{margin:0;text-align:center;font-family:'Marck Script',cursive;font-weight:400;font-size:clamp(54px,10vw,132px);line-height:1;-webkit-text-stroke:2px var(--ink);transform:rotate(-3deg);position:relative}
+.swoosh{display:block;margin:-6px auto 0;width:min(640px,80%);height:auto;transform:rotate(-2deg)}
+.role{text-align:center;font-weight:800;font-size:clamp(20px,3vw,32px);letter-spacing:-.01em;margin:22px 0 10px}
+.tags{display:flex;justify-content:center;gap:clamp(14px,4vw,40px);flex-wrap:wrap;font-size:12px;letter-spacing:.14em}
+.tags span{display:flex;align-items:center;gap:7px}
+.tags i{width:9px;height:9px;transform:rotate(45deg);display:inline-block}
+.stage{position:relative;display:grid;grid-template-columns:240px minmax(0,1fr) 240px;gap:28px;align-items:start;margin-top:40px}
+.panel{background:var(--panel);color:var(--panel-text);border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.22);overflow:hidden}
+.panel-h{background:var(--panel-head);padding:8px 12px;font-size:12.5px;display:flex;justify-content:space-between;gap:10px}
+.panel-h .r{color:var(--panel-muted)}
+.panel-b{padding:12px}
+.nodes{display:flex;flex-direction:column;align-items:center}
+.node{width:100%;background:#33333A;border:1px solid #55555C;border-radius:5px;padding:7px 10px;display:flex;gap:10px;align-items:center}
+.node b{color:#F2F2F2;font-size:14px;font-weight:600}
+.node .mono{font-size:11px;color:var(--panel-muted)}
+.wire{width:2px;height:11px;background:var(--green)}
+.kv{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #2E2E33;padding:6px 0;font-size:13px}
+.kv:last-child{border:0}
+.kv>span:first-child{color:var(--panel-muted)}
+.kv>span:last-child{color:#F2F2F2;text-align:right}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips span{background:#44444C;color:#F2F2F2;border-radius:4px;padding:3px 8px;font-size:12.5px}
+.chips .hot{background:#B8452F}.chips .ai{background:var(--clip)}
+.viewer{position:relative;max-width:420px;margin:0 auto}
+.transport{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);border-radius:9px;padding:8px 14px;width:min(300px,100%);margin:0 auto 14px;box-shadow:0 4px 12px rgba(0,0,0,.25);color:#F2F2F2;font-size:12px}
+.photo{position:relative}
+.photo img{width:100%;height:auto}
+.tbox{position:absolute;inset:2% 3% 0 3%;border:1.5px solid var(--red);pointer-events:none}
+.tbox i{position:absolute;width:9px;height:9px;background:var(--note);border:1.5px solid var(--red)}
+.tbox i:nth-child(1){left:-5px;top:-5px}.tbox i:nth-child(2){right:-5px;top:-5px}.tbox i:nth-child(3){left:-5px;bottom:-5px}.tbox i:nth-child(4){right:-5px;bottom:-5px}
+.zoom{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);background:var(--red);color:#fff;border-radius:4px;padding:3px 9px;font-size:11px;white-space:nowrap}
+.marker{position:absolute;display:flex;align-items:flex-start;font-size:12.5px;font-weight:600}
+.marker span{margin:11px 0 0 2px;border-radius:4px;padding:2px 8px}
+.wheels{display:flex;justify-content:space-between}
+.wheel{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;color:#B8B8BE}
+.wheel div{width:52px;height:52px;border-radius:50%;background:conic-gradient(#E5322D,#E8B321,#3BAA5C,#2FB5C8,#3D7BFF,#B04BD8,#E5322D);display:grid;place-items:center}
+.wheel div::after{content:"";width:42px;height:42px;border-radius:50%;background:#2A2A2E}
+.side{display:flex;flex-direction:column;gap:18px}
+
+/* section heads */
+section{position:relative}
+.sec{padding:96px 0 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.sec-head h2{margin:0;font-size:clamp(40px,6vw,76px);line-height:.95;letter-spacing:-.02em;font-weight:800}
+.sec-head h2 em{font-family:'Marck Script',cursive;font-style:normal;font-weight:400;-webkit-text-stroke:1.2px var(--ink)}
+.sec-head p{margin:0;color:var(--muted);font-size:15px;max-width:380px}
+
+/* works */
+.works{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.work{all:unset;cursor:pointer;display:flex;flex-direction:column;background:var(--panel);border-radius:12px;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.18);transition:transform .25s ease}
+.work:hover{transform:translateY(-4px)}
+.work:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.work.big{grid-column:1/-1}
+.thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:#111}
+.work.big .thumb{aspect-ratio:21/9}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.work:hover .thumb img{transform:scale(1.04)}
+.play{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;background:rgba(236,232,224,.92);display:grid;place-items:center;transition:transform .25s}
+.work:hover .play{transform:scale(1.1)}
+.tc{position:absolute;right:12px;bottom:10px;background:rgba(20,20,22,.8);color:#fff;border-radius:4px;padding:3px 8px;font-size:12px}
+.clipbar{height:6px;background:var(--clip)}
+.cap{padding:14px 16px 16px;color:var(--panel-text);display:flex;flex-direction:column;gap:4px}
+.cap b{color:#F2F2F2;font-size:20px;font-weight:800;letter-spacing:-.01em}
+.cap span{font-size:14px;color:var(--panel-muted)}
+.more{margin-top:22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.more .note{position:relative;transform:rotate(-2deg);font-size:22px}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.skill{background:var(--note);border:1.5px solid var(--ink);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:8px}
+.skill .mono{font-size:12px;letter-spacing:.1em}
+.skill b{font-size:24px;font-weight:800}
+.skill p{margin:0;color:var(--muted);font-size:15px}
+
+/* timeline */
+.tl{min-width:720px}
+.tl-years{display:grid;grid-template-columns:44px repeat(11,minmax(0,1fr));font-size:11px;color:var(--panel-muted);border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:8px}
+.track{display:grid;grid-template-columns:44px repeat(11,minmax(0,1fr));align-items:center;margin-bottom:6px}
+.track>.mono{font-size:11px;color:var(--panel-muted)}
+.clip{border-radius:4px;padding:8px 12px;color:#F2F2F2;font-size:14px}
+.wave{height:30px;background:#2F6B45;border-radius:4px;display:flex;align-items:center;gap:2px;padding:0 8px;overflow:hidden}
+.wave i{flex:1;background:#8FD3A6;border-radius:1px}
+.scroll-x{overflow-x:auto}
+
+/* clients */
+.clients{display:flex;flex-wrap:wrap;gap:14px 22px;margin-top:40px;align-items:center}
+
+/* contact */
+.contact{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;align-items:stretch}
+.contact h3{margin:0 0 10px;font-size:clamp(36px,5vw,64px);line-height:.95;letter-spacing:-.02em;font-weight:800}
+.contact h3 em{font-family:'Marck Script',cursive;font-style:normal;font-weight:400;-webkit-text-stroke:1.2px var(--ink)}
+.rq a{display:block;color:#F2F2F2;text-decoration:none;padding:8px 0;font-size:18px}
+.rq a:hover{color:#8FB4FF}
+.progress{height:6px;background:var(--line);border-radius:3px;margin-top:12px}
+.progress div{height:100%;width:100%;background:var(--green);border-radius:3px}
+.slate{transform:rotate(2deg);box-shadow:0 6px 16px rgba(0,0,0,.2);align-self:center}
+.slate .stripes{height:26px;background:repeating-linear-gradient(135deg,#1A1A1A 0 16px,#F7F4EE 16px 32px)}
+.slate .body{background:#1A1A1A;color:#F7F4EE;padding:14px 18px;font-family:Caveat,cursive;font-size:26px;line-height:1.15}
+
+/* footer tabs */
+.tabs{margin-top:96px;background:var(--panel);color:var(--panel-muted)}
+.tabs .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:14px;padding-bottom:14px;font-size:12px}
+.tabs .on{color:#fff}
+.tabs .on::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:7px;vertical-align:1px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(12,12,13,.9);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal-box{width:min(1200px,100%)}
+.modal-top{display:flex;justify-content:space-between;align-items:center;color:#F2F2F2;margin-bottom:10px;gap:12px}
+.modal-top b{font-size:18px}
+.close{background:#2A2A2E;color:#fff;border:0;border-radius:8px;min-width:44px;min-height:44px;font-size:22px;cursor:pointer}
+.frame{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+@media (max-width:980px){
+  .stage{grid-template-columns:1fr}
+  .side{flex-direction:row;flex-wrap:wrap}
+  .side>.panel{flex:1 1 260px}
+  .viewer{order:-1}
+  .works{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .skills{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .contact{grid-template-columns:1fr}
+  .note.hide-sm{display:none}
+}
+@media (max-width:620px){
+  body{font-size:16px}
+  .wrap{padding:0 18px}
+  .works,.skills{grid-template-columns:1fr}
+  .work.big .thumb{aspect-ratio:16/9}
+  .nav-links{gap:14px}
+  .marker{display:none}
+  .nav{position:static}
+  .nav .wrap{min-height:0;padding-top:10px;padding-bottom:10px}
+  .deco.brA,.deco.brB{display:none}
+  .deco.ht{opacity:.25!important}
+  .panel.wheels-p{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="ruler mono" aria-hidden="true"><span>-100</span><span>0</span><span>100</span><span>200</span><span>300</span><span>400</span><span>500</span><span>600</span><span>700</span><span>800</span><span>900</span><span>1000</span><span>1100</span><span>1200</span></div>
+
+<header class="nav">
+<div class="wrap">
+<a class="logo" href="#top"><span data-l="ru">Данил Вощеникин</span><span data-l="en">Danil Voshenikin</span></a>
+<nav class="nav-links" aria-label="Menu">
+<a href="#work"><span data-l="ru">Работы</span><span data-l="en">Work</span></a>
+<a href="#skills"><span data-l="ru">Что делаю</span><span data-l="en">Services</span></a>
+<a href="#experience"><span data-l="ru">Опыт</span><span data-l="en">Experience</span></a>
+<a href="#contact"><span data-l="ru">Контакты</span><span data-l="en">Contact</span></a>
+<div class="lang" role="group" aria-label="Language"><button type="button" data-set="en" aria-pressed="true">EN</button><button type="button" data-set="ru" aria-pressed="false">RU</button></div>
+</nav>
+</div>
+</header>
+
+<main id="top">
+
+<section class="hero grid-bg">
+<div class="deco ht" style="left:0;top:0;width:260px;height:260px;opacity:.5"></div>
+<div class="deco brB" style="right:-80px;top:20px;width:300px;height:440px;opacity:.85"></div>
+<div class="deco brA" style="left:-70px;top:560px;width:280px;height:410px;opacity:.85"></div>
+<div class="deco ht" style="right:0;bottom:0;width:280px;height:280px;opacity:.4;transform:rotate(180deg)"></div>
+
+<div class="wrap" style="position:relative">
+<div class="note hide-sm" style="left:28px;top:-20px;background:var(--tape);border-radius:2px;transform:rotate(-4deg);font-size:24px"><span data-l="ru">Монтирую<br>с 2016</span><span data-l="en">Editing<br>since 2016</span></div>
+<div class="note hide-sm" style="right:28px;top:-14px;transform:rotate(5deg);font-size:26px"><span data-l="ru">Цвет — это<br>настроение</span><span data-l="en">Color is<br>the mood</span></div>
+
+<h1><span data-l="ru">Данил Вощеникин</span><span data-l="en">Danil Voshenikin</span></h1>
+<svg class="swoosh" viewBox="0 0 520 30" aria-hidden="true"><path d="M4 22 C 140 6, 330 4, 516 14" fill="none" stroke="#1A1A1A" stroke-width="5" stroke-linecap="round"/><path d="M60 26 C 200 16, 340 14, 470 20" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/></svg>
+<p class="role"><span data-l="ru">Режиссёр монтажа · Колорист · VFX</span><span data-l="en">Editor · Colorist · VFX Artist</span></p>
+<div class="tags mono">
+<span><i style="background:var(--blue)"></i><span data-l="ru">МОНТАЖ</span><span data-l="en">EDIT</span></span>
+<span><i style="background:var(--red)"></i><span data-l="ru">ЦВЕТ</span><span data-l="en">COLOR</span></span>
+<span><i style="background:var(--green)"></i><span data-l="ru">ЗВУК</span><span data-l="en">SOUND</span></span>
+<span><i style="background:var(--yellow)"></i>VFX</span>
+</div>
+
+<div class="stage">
+<div class="side">
+<div class="panel">
+<div class="panel-h"><span>Nodes · <span data-l="ru">Что делаю</span><span data-l="en">What I do</span></span><span class="r">⋯</span></div>
+<div class="panel-b nodes">
+<div class="node"><span class="mono">01</span><b data-l="ru">Монтаж</b><b data-l="en">Editing</b></div><div class="wire"></div>
+<div class="node"><span class="mono">02</span><b data-l="ru">Цвет</b><b data-l="en">Color grading</b></div><div class="wire"></div>
+<div class="node"><span class="mono">03</span><b data-l="ru">Звук</b><b data-l="en">Sound</b></div><div class="wire"></div>
+<div class="node"><span class="mono">04</span><b data-l="ru">VFX · клинап</b><b data-l="en">VFX · cleanup</b></div><div class="wire"></div>
+<div class="node"><span class="mono">05</span><b data-l="ru">AI-видео</b><b data-l="en">AI video</b></div><div class="wire"></div>
+<div class="node" style="background:#2A2A2E"><span class="mono">06</span><b data-l="ru">3D · база</b><b data-l="en">3D · basics</b></div>
+</div>
+</div>
+</div>
+
+<div class="viewer">
+<div class="transport mono" aria-hidden="true">
+<svg width="92" height="12" viewBox="0 0 92 12"><path d="M2 1v10M4 6l8-5v10z" fill="#D8D8DC" stroke="#D8D8DC"/><rect x="24" y="1" width="10" height="10" fill="#D8D8DC"/><path d="M46 1l9 5-9 5z" fill="#E5322D"/><path d="M66 6l8-5v10zM76 1v10" fill="#D8D8DC" stroke="#D8D8DC"/><path d="M84 3a4 4 0 1 1 0 6" fill="none" stroke="#D8D8DC" stroke-width="1.5"/></svg>
+<span>10:00:26:12</span>
+</div>
+<div class="photo">
+<img src="assets/portrait.webp" width="792" height="992" alt="Danil Voshenikin">
+<div class="tbox" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="zoom mono">Zoom 1.000 · 1080×1350</span></div>
+<div class="marker" style="left:4%;top:14%" aria-hidden="true"><svg width="12" height="16" viewBox="0 0 12 16"><path d="M1 1h10v9l-5 5-5-5z" fill="#3D7BFF" stroke="#1A1A1A" stroke-width=".8"/></svg><span style="background:#3D7BFF;color:#fff">Artel</span></div>
+<div class="marker" style="right:2%;top:24%" aria-hidden="true"><svg width="12" height="16" viewBox="0 0 12 16"><path d="M1 1h10v9l-5 5-5-5z" fill="#2FB5C8" stroke="#1A1A1A" stroke-width=".8"/></svg><span style="background:#2FB5C8">Samsung</span></div>
+<div class="marker" style="left:0;top:58%" aria-hidden="true"><svg width="12" height="16" viewBox="0 0 12 16"><path d="M1 1h10v9l-5 5-5-5z" fill="#E8B321" stroke="#1A1A1A" stroke-width=".8"/></svg><span style="background:#E8B321">AKFA</span></div>
+<div class="marker" style="right:6%;top:60%" aria-hidden="true"><svg width="12" height="16" viewBox="0 0 12 16"><path d="M1 1h10v9l-5 5-5-5z" fill="#3BAA5C" stroke="#1A1A1A" stroke-width=".8"/></svg><span style="background:#3BAA5C">BYD</span></div>
+<div class="marker" style="right:10%;top:80%" aria-hidden="true"><svg width="12" height="16" viewBox="0 0 12 16"><path d="M1 1h10v9l-5 5-5-5z" fill="#E75C9C" stroke="#1A1A1A" stroke-width=".8"/></svg><span style="background:#E75C9C">Paynet</span></div>
+<div class="marker" style="left:5%;top:82%" aria-hidden="true"><svg width="12" height="16" viewBox="0 0 12 16"><path d="M1 1h10v9l-5 5-5-5z" fill="#B04BD8" stroke="#1A1A1A" stroke-width=".8"/></svg><span style="background:#B04BD8;color:#fff">Nest One</span></div>
+</div>
+</div>
+
+<div class="side">
+<div class="panel wheels-p">
+<div class="panel-h"><span>Color Wheels · Primaries</span></div>
+<div class="panel-b wheels" aria-hidden="true"><div class="wheel"><div></div>Lift</div><div class="wheel"><div></div>Gamma</div><div class="wheel"><div></div>Gain</div></div>
+</div>
+<div class="panel">
+<div class="panel-h"><span>Inspector · <span data-l="ru">О себе</span><span data-l="en">About</span></span><span class="r">⋯</span></div>
+<div class="panel-b">
+<div class="kv"><span><span data-l="ru">Опыт</span><span data-l="en">Experience</span></span><span><span data-l="ru">10 лет</span><span data-l="en">10 years</span></span></div>
+<div class="kv"><span><span data-l="ru">Город</span><span data-l="en">Based in</span></span><span><span data-l="ru">Ташкент</span><span data-l="en">Tashkent</span></span></div>
+<div class="kv"><span><span data-l="ru">Языки</span><span data-l="en">Languages</span></span><span><span data-l="ru">RU · EN · UZ база</span><span data-l="en">RU · EN · basic UZ</span></span></div>
+<div class="kv"><span><span data-l="ru">Проект</span><span data-l="en">Project</span></span><span>Salom Tashkent</span></div>
+</div>
+</div>
+<div class="panel">
+<div class="panel-h"><span>Effects Library · <span data-l="ru">Софт</span><span data-l="en">Tools</span></span></div>
+<div class="panel-b chips"><span class="hot">DaVinci Resolve</span><span>Nuke</span><span>After Effects</span><span>Premiere</span><span>Audition</span><span>Cinema 4D</span><span class="ai">Seedance</span><span class="ai">Higgsfield</span></div>
+</div>
+</div>
+</div>
+
+<p style="max-width:640px;margin:72px auto 0;text-align:center;font-size:19px">
+<span data-l="ru">10 лет делаю рекламу и имиджевые ролики в Ташкенте. Беру материал после съёмки и сам веду его до мастера: монтаж, цвет, звук, клинап и VFX. В работе использую AI-генерацию.</span>
+<span data-l="en">For ten years I’ve been cutting commercials and brand films in Tashkent. I take footage from the shoot all the way to the final master myself: edit, color, sound, cleanup and VFX, with AI generation where it helps.</span>
+</p>
+</div>
+</section>
+
+<section id="work" class="sec">
+<div class="wrap">
+<div class="sec-head">
+<h2><span data-l="ru">Избранные <em>работы</em></span><span data-l="en">Selected <em>work</em></span></h2>
+<p class="mono"><span data-l="ru">BIN · SELECTS — нажмите, чтобы смотреть</span><span data-l="en">BIN · SELECTS — click to play</span></p>
+</div>
+<div class="works" id="works"></div>
+<div class="more">
+<span class="note" style="position:relative"><span data-l="ru">Скоро здесь будет больше работ</span><span data-l="en">More work coming soon</span></span>
+</div>
+</div>
+</section>
+
+<section id="skills" class="sec">
+<div class="wrap">
+<div class="sec-head"><h2><span data-l="ru">Что <em>делаю</em></span><span data-l="en">What I <em>do</em></span></h2></div>
+<div class="skills">
+<div class="skill"><span class="mono" style="color:var(--blue)">NODE 01</span><b data-l="ru">Монтаж</b><b data-l="en">Editing</b><p data-l="ru">Режиссура монтажа: собираю историю и ритм из исходников.</p><p data-l="en">Story and rhythm built from raw footage.</p></div>
+<div class="skill"><span class="mono" style="color:var(--red)">NODE 02</span><b data-l="ru">Цвет</b><b data-l="en">Color grading</b><p data-l="ru">Цветокоррекция и грейд в DaVinci Resolve.</p><p data-l="en">Correction and grading in DaVinci Resolve.</p></div>
+<div class="skill"><span class="mono" style="color:var(--green)">NODE 03</span><b data-l="ru">Звук</b><b data-l="en">Sound</b><p data-l="ru">Чистка, сведение и музыка под картинку.</p><p data-l="en">Cleanup, mixing and music to picture.</p></div>
+<div class="skill"><span class="mono" style="color:#B8860B">NODE 04</span><b data-l="ru">VFX и клинап</b><b data-l="en">VFX &amp; cleanup</b><p data-l="ru">Убираю лишнее из кадра, композитинг в Nuke и After Effects.</p><p data-l="en">Shot cleanup and compositing in Nuke and After Effects.</p></div>
+<div class="skill"><span class="mono" style="color:var(--clip)">NODE 05</span><b data-l="ru">AI-видео</b><b data-l="en">AI video</b><p data-l="ru">Генерации и переходы в Seedance и Higgsfield.</p><p data-l="en">Generations and transitions in Seedance and Higgsfield.</p></div>
+<div class="skill"><span class="mono" style="color:var(--muted)">NODE 06</span><b data-l="ru">3D, база</b><b data-l="en">3D, basics</b><p data-l="ru">Простые 3D-задачи в Cinema 4D.</p><p data-l="en">Simple 3D tasks in Cinema 4D.</p></div>
+</div>
+</div>
+</section>
+
+<section id="experience" class="sec">
+<div class="wrap">
+<div class="sec-head"><h2><span data-l="ru"><em>Опыт</em></span><span data-l="en"><em>Experience</em></span></h2></div>
+<div class="panel">
+<div class="panel-h"><span>Timeline 1</span><span class="mono" style="color:var(--red)">● 2026</span></div>
+<div class="panel-b scroll-x">
+<div class="tl">
+<div class="tl-years mono"><span></span><span>2016</span><span>17</span><span>18</span><span>19</span><span>20</span><span>2021</span><span>22</span><span>23</span><span>24</span><span>25</span><span>2026</span></div>
+<div class="track"><span class="mono">V2</span><div class="clip" style="grid-column:2/-1;background:#5B4A8B"><span data-l="ru">На площадке по проектам: ассистент режиссёра, актёры, амбассадоры брендов</span><span data-l="en">On set, project by project: assistant director, actors, brand ambassadors</span></div></div>
+<div class="track"><span class="mono">V1</span>
+<div class="clip" style="grid-column:2/span 5;background:var(--clip);margin-right:3px"><b>Creative Idea Group</b><br><span data-l="ru">монтаж, цвет, VFX</span><span data-l="en">editing, color, VFX</span></div>
+<div class="clip" style="grid-column:7/-1;background:var(--clip)"><b>Borisov&amp;Irisov</b><br><span data-l="ru">то же агентство, новое имя · режиссёр монтажа</span><span data-l="en">same agency, renamed · lead editor</span></div>
+</div>
+<div class="track"><span class="mono">A1</span><div class="wave" id="wave" style="grid-column:2/-1" aria-hidden="true"></div></div>
+</div>
+</div>
+</div>
+<div class="clients">
+<span class="hand" style="font-size:28px"><span data-l="ru">Клиенты:</span><span data-l="en">Clients:</span></span>
+<span style="font-weight:800;font-size:22px">AKFA Holding</span><span style="font-weight:800;font-size:22px">Artel</span><span style="font-weight:800;font-size:22px">Avalon</span><span style="font-weight:800;font-size:22px">Samsung</span><span style="font-weight:800;font-size:22px">BYD · Denza</span><span style="font-weight:800;font-size:22px">Uzbekistan Airways</span><span style="font-weight:800;font-size:22px">Paynet</span><span style="font-weight:800;font-size:22px">Nest One</span>
+</div>
+</div>
+</section>
+
+<section id="contact" class="sec">
+<div class="wrap">
+<div class="contact">
+<div>
+<h3><span data-l="ru">Есть ролик? <em>Напишите.</em></span><span data-l="en">Got a project? <em>Let’s talk.</em></span></h3>
+<div class="panel" style="margin-top:22px">
+<div class="panel-h"><span>Deliver · Render Queue</span><span style="color:var(--green)">Complete</span></div>
+<div class="panel-b rq">
+<a href="mailto:ted980915@gmail.com" class="mono">ted980915@gmail.com</a>
+<a href="tel:+998977689246" class="mono">+998 97 768-92-46</a>
+<span class="mono" style="color:var(--panel-muted);font-size:14px"><span data-l="ru">Ташкент, Узбекистан</span><span data-l="en">Tashkent, Uzbekistan</span></span>
+<div class="progress"><div></div></div>
+</div>
+</div>
+</div>
+<div class="slate" aria-hidden="true"><div class="stripes"></div><div class="body"><span data-l="ru">Сцена: Ташкент<br>Дубль: 10 лет<br>Кадр: портфолио</span><span data-l="en">Scene: Tashkent<br>Take: 10 years<br>Shot: portfolio</span></div></div>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer class="tabs mono">
+<div class="wrap"><span>Media</span><span>Cut</span><span>Edit</span><span>Fusion</span><span>Color</span><span>Fairlight</span><span class="on">Deliver</span><span>© 2026</span></div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div class="modal-box">
+<div class="modal-top"><b id="modal-title"></b><button type="button" class="close" id="close" aria-label="Закрыть / Close">×</button></div>
+<div class="frame" id="frame"></div>
+</div>
+</div>
+
+<script>
+var WORKS = [
+  { id: '1249657789', img: 'assets/mancity.webp', big: true, dur: '01:44',
+    ru: { t: 'Artel × Manchester City', m: 'Рекламный ролик · 2026' },
+    en: { t: 'Artel × Manchester City', m: 'Commercial · 2026' } },
+  { id: '1249380322', img: 'assets/denza.webp', dur: '02:24',
+    ru: { t: 'Denza · Family', m: 'Рекламный ролик · 2026' },
+    en: { t: 'Denza · Family', m: 'Commercial · 2026' } },
+  { id: '1249373611', img: 'assets/uzairways.webp', dur: '01:15',
+    ru: { t: 'Uzbekistan Airways · Dress Code', m: 'Имиджевый ролик · 2026' },
+    en: { t: 'Uzbekistan Airways · Dress Code', m: 'Brand film · 2026' } },
+  { id: '1249382382', img: 'assets/engelberg.webp', dur: '00:38',
+    ru: { t: 'Engelberg · Golf', m: 'Рекламный ролик · 2026' },
+    en: { t: 'Engelberg · Golf', m: 'Commercial · 2026' } }
+];
+var lang = 'en';
+try { var saved = localStorage.getItem('siteLang'); if (saved === 'en' || saved === 'ru') lang = saved; } catch (e) {}
+
+function renderWorks() {
+  var box = document.getElementById('works');
+  box.innerHTML = '';
+  WORKS.forEach(function (w) {
+    var d = w[lang];
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'work' + (w.big ? ' big' : '');
+    b.setAttribute('aria-label', (lang === 'ru' ? 'Смотреть: ' : 'Play: ') + d.t);
+    b.innerHTML = '<div class="thumb"><img loading="lazy" src="' + w.img + '" alt=""><span class="play"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4.5l12 7.5-12 7.5z" fill="#1A1A1A"/></svg></span><span class="tc mono">' + w.dur + '</span></div><div class="clipbar"></div><div class="cap"><b></b><span></span></div>';
+    b.querySelector('.cap b').textContent = d.t;
+    b.querySelector('.cap span').textContent = d.m;
+    b.addEventListener('click', function () { openVideo(w); });
+    box.appendChild(b);
+  });
+}
+var modal = document.getElementById('modal'), frame = document.getElementById('frame'), lastFocus = null;
+function openVideo(w) {
+  lastFocus = document.activeElement;
+  document.getElementById('modal-title').textContent = w[lang].t;
+  frame.innerHTML = '<iframe src="https://player.vimeo.com/video/' + w.id + '?autoplay=1&title=0&byline=0&portrait=0&dnt=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="' + w[lang].t.replace(/"/g, '') + '"></iframe>';
+  modal.classList.add('open');
+  document.getElementById('close').focus();
+}
+function closeVideo() { modal.classList.remove('open'); frame.innerHTML = ''; if (lastFocus) lastFocus.focus(); }
+document.getElementById('close').addEventListener('click', closeVideo);
+modal.addEventListener('click', function (e) { if (e.target === modal) closeVideo(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) closeVideo(); });
+
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.title = l === 'ru' ? 'Данил Вощеникин — режиссёр монтажа, колорист, VFX' : 'Danil Voshenikin — Editor, Colorist, VFX Artist';
+  document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.set === l ? 'true' : 'false'); });
+  try { localStorage.setItem('siteLang', l); } catch (e) {}
+  renderWorks();
+}
+document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.set); }); });
+
+var wave = document.getElementById('wave');
+for (var i = 0; i < 120; i++) { var s = document.createElement('i'); s.style.height = Math.round(5 + Math.abs(Math.sin(i * 0.7) * Math.cos(i * 0.23)) * 20) + 'px'; wave.appendChild(s); }
+setLang(lang);
+</script>
+</body>
+</html>
